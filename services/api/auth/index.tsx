@@ -1,13 +1,11 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { api } from "@/services/api/instance";
-import { useError } from "@/context/errorContext";
 import { ILoginProps } from "@/interfaces/auth";
 
 const apiUrl = process.env.EXPO_PUBLIC_API;
 
 export const AuthApi = {
   useLogin: () => {
-    const { setError } = useError();
     return useMutation({
       mutationKey: ["login"],
       mutationFn: async (params: ILoginProps) => {
@@ -23,17 +21,12 @@ export const AuthApi = {
           ] = `Bearer ${response.data.token}`;
           return response.data;
         } catch (error) {
-          setError(
-            (error as any).response?.data?.message || "Bir hata oluştu."
-          );
           throw error;
         }
       },
     });
   },
   useGetMeQuery: () => {
-    const { setError } = useError();
-
     return useQuery({
       queryKey: ["me"],
       queryFn: async () => {
@@ -41,9 +34,6 @@ export const AuthApi = {
           const response = await api.get(`${apiUrl}/auth/me`);
           return response.data;
         } catch (error) {
-          setError(
-            (error as any).response?.data?.message || "Bir hata oluştu."
-          );
           throw error;
         }
       },

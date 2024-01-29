@@ -1,22 +1,16 @@
 import React, { useEffect, useState } from "react";
-import {
-  FlatList,
-  StyleSheet,
-  TouchableOpacity,
-  useWindowDimensions,
-} from "react-native";
+import { FlatList, StyleSheet, useWindowDimensions } from "react-native";
 import { Text, View } from "@/components/Themed";
-import { useProductContext, ProductProvider } from "@/context/productContext";
+import { useProductContext } from "@/context/productContext";
 import { ProductCard } from "@/components/product";
-import { useNavigation, useFocusEffect, Link } from "expo-router";
+import { Link } from "expo-router";
 import { InnerHeader } from "@/components/common";
 import { useCategoryContext } from "@/context/categoryContext";
 import { CategoryApi } from "@/services/api/categories";
 import { useTranslation } from "react-i18next";
 
-const { height } = useWindowDimensions();
-
 export default function CategoriesScreen() {
+  const { height } = useWindowDimensions();
   const { t } = useTranslation();
 
   const { selectedProducts } = useProductContext();
@@ -27,14 +21,12 @@ export default function CategoriesScreen() {
   const { data: categoryProducts, isLoading: loadingCategoryProducts } =
     CategoryApi.useGetCategoryProductsQuery(selectedCategory);
 
-  console.log("categoryProducts", categoryProducts);
-
   useEffect(() => {
     setProducts(categoryProducts?.products || []);
   }, [categoryProducts]);
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { paddingTop: height * 0.06 }]}>
       <InnerHeader headerTitle={t(selectedCategory)} />
       {loadingCategoryProducts ? (
         <Text>{t("loading")}</Text>
@@ -68,7 +60,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    paddingTop: height * 0.06,
+
     backgroundColor: "#ffffff",
   },
   title: {

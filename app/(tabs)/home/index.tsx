@@ -1,11 +1,11 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   Dimensions,
   FlatList,
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-import { Text, View } from "../../../components/Themed";
+import { Text, View } from "@/components/Themed";
 import { CategoryApi } from "@/services/api/categories";
 import { router } from "expo-router";
 import { InnerHeader } from "@/components/common";
@@ -39,12 +39,18 @@ export default function HomeScreen() {
   return (
     <View style={styles.container}>
       <InnerHeader isBack={false} headerTitle={t("home")} />
-
-      <SearchBar
-        onItemSelected={(item) => {
-          router.push(`/home/detail/${item.id}`);
+      <View
+        style={{
+          paddingTop: height * 0.06,
+          width: "100%",
         }}
-      />
+      >
+        <SearchBar
+          onItemSelected={(item) => {
+            router.push(`/home/detail/${item.id}`);
+          }}
+        />
+      </View>
 
       {loadingCategories ? (
         <Text>{t("loading")}</Text>

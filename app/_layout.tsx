@@ -13,7 +13,6 @@ import {
 
 import { SessionProvider } from "@/context";
 import { CategoryProvider } from "@/context/categoryContext";
-import { ErrorProvider } from "@/context/errorContext";
 import { FavProvider } from "@/context/favContext";
 import { ProductProvider } from "@/context/productContext";
 
@@ -63,32 +62,26 @@ function RootLayoutNav() {
     <QueryClientProvider client={queryClient}>
       <SessionProvider>
         <I18nextProvider i18n={i18n}>
-          <ErrorProvider>
-            <ProductProvider>
-              <FavProvider>
-                <CategoryProvider>
-                  <ThemeProvider
-                    value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-                  >
-                    <Stack>
-                      <Stack.Screen
-                        name="loginScreen"
-                        options={{ headerShown: false }}
-                      />
-                      <Stack.Screen
-                        name="(tabs)"
-                        options={{ headerShown: false }}
-                      />
-                      <Stack.Screen
-                        name="modal"
-                        options={{ presentation: "modal" }}
-                      />
-                    </Stack>
-                  </ThemeProvider>
-                </CategoryProvider>
-              </FavProvider>
-            </ProductProvider>
-          </ErrorProvider>
+          <ProductProvider>
+            <FavProvider>
+              <CategoryProvider>
+                <ThemeProvider
+                  value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+                >
+                  <Stack>
+                    <Stack.Screen
+                      name="loginScreen"
+                      options={{ headerShown: false }}
+                    />
+                    <Stack.Screen
+                      name="(tabs)"
+                      options={{ headerShown: false }}
+                    />
+                  </Stack>
+                </ThemeProvider>
+              </CategoryProvider>
+            </FavProvider>
+          </ProductProvider>
         </I18nextProvider>
       </SessionProvider>
     </QueryClientProvider>

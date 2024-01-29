@@ -18,7 +18,11 @@ interface SearchBarProps {
 
 export const SearchBar: React.FC<SearchBarProps> = ({ onItemSelected }) => {
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [debounceTimeout, setDebounceTimeout] = useState<NodeJS.Timeout | null>(
+    null
+  );
   const { data, isLoading } = SearchApi.useSearch(searchQuery);
+
   const { t } = useTranslation();
 
   const handleItemSelected = (selectedItem: any) => {
@@ -27,9 +31,23 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onItemSelected }) => {
   };
 
   useEffect(() => {
-    if (searchQuery.trim() === "") {
-      return;
+    if (debounceTimeout) {
+      clearTimeout(debounceTimeout);
     }
+
+    const timeout = setTimeout(() => {
+      if (searchQuery.trim() !== "") {
+        console.log("Search query:", searchQuery);
+      }
+    }, 2000);
+
+    setDebounceTimeout(timeout);
+
+    return () => {
+      if (debounceTimeout) {
+        clearTimeout(debounceTimeout);
+      }
+    };
   }, [searchQuery]);
 
   return (
@@ -38,7 +56,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onItemSelected }) => {
         style={styles.textInput}
         placeholder={t("search")}
         value={searchQuery}
-        onChangeText={setSearchQuery}
+        onChangeText={(text) => setSearchQuery(text)}
       />
       {isLoading && <Text>{t("loading")}</Text>}
       {data && data.products.length > 0 && searchQuery.length > 0 ? (

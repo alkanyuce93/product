@@ -47,10 +47,7 @@ export const InnerHeader: React.FC<InnerHeaderProps> = ({
   const renderRightComponent = () => {
     if (onRightPress) {
       return (
-        <TouchableOpacity
-          onPress={onRightPress}
-          style={styles.rightButton}
-        ></TouchableOpacity>
+        <TouchableOpacity onPress={onRightPress} style={styles.rightButton} />
       );
     }
     return <View style={{ flex: 1 }} />;

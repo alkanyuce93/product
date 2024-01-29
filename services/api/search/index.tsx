@@ -1,13 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/services/api/instance";
-import { useError } from "@/context/errorContext";
 
 const apiUrl = process.env.EXPO_PUBLIC_API;
 
 export const SearchApi = {
   useSearch: (searchQuery: string) => {
-    const { setError } = useError();
-
     return useQuery({
       queryKey: ["search", searchQuery],
 
@@ -19,9 +16,6 @@ export const SearchApi = {
 
           return response.data;
         } catch (error) {
-          setError(
-            (error as any).response?.data?.message || "Bir hata oluştu."
-          );
           throw error;
         }
       },
